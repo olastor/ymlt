@@ -113,9 +113,9 @@ func getDependentNodes(templateStr string, root *yaml.Node, config *Config) ([]*
 			singlePaths = append(singlePaths, path)
 			return ""
 		},
-		"tt": func(path string) string {
+		"tt": func(path string) []string {
 			multiPaths = append(multiPaths, path)
-			return ""
+			return []string{}
 		},
 	}
 
