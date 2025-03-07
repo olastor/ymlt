@@ -5,3 +5,13 @@ country: "USA"
 address: |
   Main Street 42,
   90210 (USA)
+---
+street: "Elm Street"
+houseNumber: "13A"
+postalCode: "10001"
+country: "USA"
+address: |
+  Elm Street 13A,
+  10001 (USA)
+---
+
