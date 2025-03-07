@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	Defaults string
+	Defaults []byte
 	FuncMap  template.FuncMap
 }
 
@@ -182,7 +182,52 @@ func getDependentNodes(templateStr string, root *yaml.Node, config *Config) ([]*
 	return nodes, nil
 }
 
+func addDefaults(doc *yaml.Node, defaults *yaml.Node) error {
+	if doc.Kind == yaml.DocumentNode && len(doc.Content) == 1 {
+		doc = doc.Content[0]
+	}
+	if defaults.Kind == yaml.DocumentNode && len(defaults.Content) == 1 {
+		defaults = defaults.Content[0]
+	}
+
+	for i := 0; i < len(defaults.Content); i += 2 {
+		keyDefault := defaults.Content[i]
+		valueDefault := defaults.Content[i+1]
+
+		found := false
+		for j := 0; j < len(doc.Content); j += 2 {
+			keyDoc := doc.Content[j]
+
+			if keyDoc.Value == keyDefault.Value {
+				found = true
+				if doc.Content[j+1].Kind == yaml.MappingNode && valueDefault.Kind == yaml.MappingNode {
+					if err := addDefaults(doc.Content[j+1], valueDefault); err != nil {
+						return err
+					}
+				}
+				break
+			}
+		}
+
+		if !found {
+			doc.Content = append(doc.Content, keyDefault, valueDefault)
+		}
+	}
+	return nil
+}
+
 func Apply(root *yaml.Node, config *Config) error {
+	if config.Defaults != nil {
+		var defaults yaml.Node
+		if err := yaml.Unmarshal(config.Defaults, &defaults); err != nil {
+			return err
+		}
+
+		if err := addDefaults(root, &defaults); err != nil {
+			return err
+		}
+	}
+
 	nodeDeps := map[*yaml.Node][]*yaml.Node{}
 	err := traverse(root, func(n *yaml.Node, parent *yaml.Node, index int) error {
 		if n.Kind != yaml.ScalarNode || n.Value == "" {

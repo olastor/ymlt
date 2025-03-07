@@ -1,0 +1,3 @@
+address: |
+  {{ t ".street" }} {{ t ".houseNumber"}},
+  {{ t ".postalCode" }} ({{ t ".country" }})

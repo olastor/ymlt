@@ -1,0 +1,9 @@
+name: John
+age: 32
+ageCopy: "32"
+nameCopy: 'John'
+---
+name: Peter
+age: 98
+nameAndAge: |
+  Peter (98 years old)

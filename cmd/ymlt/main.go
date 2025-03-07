@@ -57,6 +57,16 @@ func main() {
 		decoder = yaml.NewDecoder(yamlFile)
 	}
 
+	var defaults []byte
+	if defaultsFlag != "" {
+		var err error
+		defaults, err = os.ReadFile(defaultsFlag)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to read defaults file: %v", err)
+			os.Exit(1)
+		}
+	}
+
 	// TODO: implement defaults flag
 
 	i := 0
@@ -73,7 +83,7 @@ func main() {
 			os.Stdout.Write([]byte("---\n"))
 		}
 
-		err := ymlt.Apply(&doc, &ymlt.Config{})
+		err := ymlt.Apply(&doc, &ymlt.Config{Defaults: defaults})
 		if err != nil {
 			panic(err)
 		}

@@ -1,0 +1,9 @@
+name: John
+age: 32
+ageCopy: "{{ t \".age\" }}"
+nameCopy: '{{ t "$.name" }}'
+---
+name: Peter
+age: 98
+nameAndAge: |
+  {{ t ".name" }} ({{ t "$.age" }} years old)
