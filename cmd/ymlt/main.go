@@ -67,8 +67,6 @@ func main() {
 		}
 	}
 
-	// TODO: implement defaults flag
-
 	i := 0
 	for {
 		var doc yaml.Node
