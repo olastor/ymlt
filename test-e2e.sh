@@ -7,9 +7,9 @@ for file in e2e/*_out.yaml; do
   echo "Testing file: ${base}_in.yaml"
   temp_in=$(mktemp)
   if [[ -f "${base}_defaults.yaml" ]]; then
-    ymlt --defaults "${base}_defaults.yaml" "${base}_in.yaml" > "$temp_in"
+    ./ymlt --defaults "${base}_defaults.yaml" "${base}_in.yaml" > "$temp_in"
   else
-    ymlt "${base}_in.yaml" > "$temp_in"
+    ./ymlt "${base}_in.yaml" > "$temp_in"
   fi
   diff "$temp_in" "$file"
   rm "$temp_in"
