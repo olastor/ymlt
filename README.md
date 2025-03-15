@@ -1,6 +1,6 @@
 # ymlt
 
-`ymlt` is a command-line tool for processing YAML documents with support for default values.
+`ymlt` is a command-line tool for processing YAML documents, allowing the use of Go templates in every string field, with added functions `t` and `tt` to lookup values from within the same document.
 
 ## Usage
 
